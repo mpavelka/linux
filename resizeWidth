@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+from PIL import Image
+import glob, os
+import re
+
+
+width = 220.
+
+
+matchedFiles = [f for f in os.listdir('.') if re.search(r'.*\.[jpg|JPG]', f)]
+
+for infile in matchedFiles:
+	file, ext = os.path.splitext(infile)
+	image = Image.open(infile)
+	imgWidth = image.size[0]
+	imgHeight = image.size[1]
+
+	size  = width, imgHeight*(width/imgWidth)
+	image.thumbnail(size, Image.ANTIALIAS)
+	image.save(file + ".jpg", "JPEG")
+	
