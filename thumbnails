@@ -12,6 +12,7 @@ print "ratio = {}".format(ratio)
 matchedFiles = [f for f in os.listdir('.') if re.search(r'.*\.[jpg|JPG]', f)]
 
 for infile in matchedFiles:
+	print "reading {}".format(infile)
 	file, ext = os.path.splitext(infile)
 	image = Image.open(infile)
 	imgWidth = image.size[0]
@@ -34,6 +35,6 @@ for infile in matchedFiles:
 		top = (imgHeight - height) / 2
 	print "({}x{})".format(width, height), (imgWidth, imgHeight), (left, top, left+width, top+height), file
 	
-	image.crop( (int(left), int(top), int(left+width), int(top+height)) ).save("thumb"+file + ".jpg", "JPEG")
+	#image.crop( (int(left), int(top), int(left+width), int(top+height)) ).save("thumb"+file + ".jpg", "JPEG")
 	
 	
