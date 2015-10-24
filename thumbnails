@@ -6,22 +6,26 @@ import re
 
 
 ratio = 4/3.
+thumb_path = "mini"
 
 print "ratio = {}".format(ratio)
 
 matchedFiles = [f for f in os.listdir('.') if re.search(r'.*\.[jpg|JPG]', f)]
 
+# Create folder 'mini'
+if not os.path.exists(thumb_path):
+	os.mkdir(thumb_path)
+
 for infile in matchedFiles:
 	print "reading {}".format(infile)
-	file, ext = os.path.splitext(infile)
+
 	image = Image.open(infile)
 	imgWidth = image.size[0]
 	imgHeight = image.size[1]
-
+	
+	# Calculate new resolution
 	width 	= 0
 	height 	= 0
-
-
 
 	if imgWidth*(1/ratio) >= imgHeight:
 		width 	= imgHeight*ratio
@@ -33,8 +37,15 @@ for infile in matchedFiles:
 		height 	= imgWidth*(1/ratio)
 		left = 0
 		top = (imgHeight - height) / 2
-	print "({}x{})".format(width, height), (imgWidth, imgHeight), (left, top, left+width, top+height), file
+
+	# Crop and save	
+	filename, ext = os.path.splitext(infile)
+	print "({}x{})".format(width, height), (imgWidth, imgHeight), (left, top, left+width, top+height), filename
 	
-	#image.crop( (int(left), int(top), int(left+width), int(top+height)) ).save("thumb"+file + ".jpg", "JPEG")
-	
-	
+	outfile = os.path.join(os.getcwd(), thumb_path, filename+ext)
+	print "Cropping and saving to {}".format(outfile)
+
+	image.crop( (int(left), int(top), int(left+width), int(top+height)) ).save(outfile, "JPEG")
+
+print "done..."
+
